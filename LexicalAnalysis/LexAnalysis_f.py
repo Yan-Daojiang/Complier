@@ -5,7 +5,7 @@ def getSourceCode(path):
     line = ''
     for s in open(path):
         line = line + s.strip('\n')
-    return line;
+    return line
 
 
 def removeSpace(sourceCode):
@@ -123,7 +123,7 @@ def isKeyWord(s):
     key = ["begin", "if", "then", "while", "do", "end"]
     keyNum = [1, 2, 3, 4, 5, 6]
     if s in key:
-        return key.index(s) + 1
+        return keyNum[key.index(s)]
     else:
         return 0
 
