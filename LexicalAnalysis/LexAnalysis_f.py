@@ -7,6 +7,7 @@ def getSourceCode(path):
         line = line + s.strip('\n')
     return line;
 
+
 def removeSpace(sourceCode):
     """去除源代码中的空格和制表符
     返回一个字符流形式的代码列表"""
@@ -15,6 +16,7 @@ def removeSpace(sourceCode):
         sourceCode.remove('')
     return sourceCode
 
+
 def take(sourceCode):
     """从字符流列表开始进行逐一分析"""
     num = 0
@@ -22,24 +24,25 @@ def take(sourceCode):
         str = sourceCode[num]
         k = identifyChar(str)
         if k == 1:
-            str1,num = idetifier(sourceCode, str, num)
+            str1, num = idetifier(sourceCode, str, num)
             if isKeyWord(str1):
                 printf(str1, isKeyWord(str1))
             else:
-                printf(str1,10)
+                printf(str1, 10)
             continue
         if k == 2:
-            str1 ,num= number(sourceCode, str, num)
-            printf(str1,11)
+            str1, num = number(sourceCode, str, num)
+            printf(str1, 11)
             continue
         if k == 3:
-            str1 , num= symbolStr(sourceCode, str, num)
+            str1, num = symbolStr(sourceCode, str, num)
             printf(str1, isSymbol(str1))
             continue
 
+
 def idetifier(souceCode, s, num):
     """标识符和保留字处理"""
-    if num == len(sourceCode)-1:
+    if num == len(sourceCode) - 1:
         return s, num + 1
     curNum = num + 1
     flag = True
@@ -49,30 +52,32 @@ def idetifier(souceCode, s, num):
             if isKeyWord(s):
                 curNum = curNum + 1
                 num = curNum
-                return s , num
-            curNum = curNum +1
+                return s, num
+            curNum = curNum + 1
         else:
             flag = False
         num = curNum
     return s, num
 
-def symbolStr(sourceCode,s,num):
+
+def symbolStr(sourceCode, s, num):
     """符号处理"""
-    if num == len(sourceCode)-1:
+    if num == len(sourceCode) - 1:
         return s, num + 1
-    if num == len(sourceCode)-1:
+    if num == len(sourceCode) - 1:
         return s, num
     curNum = num + 1
     str = sourceCode[curNum]
-    if str in [">","<","=",":"]:
+    if str in [">", "<", "=", ":"]:
         s = s + sourceCode[curNum]
         curNum = curNum + 1
     num = curNum
     return s, num
 
+
 def number(sourceCode, s, num):
     """对数字进行处理"""
-    if num == len(sourceCode)-1:
+    if num == len(sourceCode) - 1:
         return s, num + 1
     curNum = num + 1
     flag = True
@@ -85,14 +90,16 @@ def number(sourceCode, s, num):
     num = curNum
     return s, num
 
+
 def isSymbol(s):
     """对运算符和界符进行判断，如果是C子集中的运算符和界符界返回相应的种别码"""
-    symbol = ["+","-","*","/",":",":=","<",">","<>","<=",">",">=","=",";","(",")","#"]
+    symbol = ["+", "-", "*", "/", ":", ":=", "<", ">", "<>", "<=", ">", ">=", "=", ";", "(", ")", "#"]
     symbolNum = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 0]
     if s in symbol:
         return symbolNum[symbol.index(s)]
     else:
         return 0
+
 
 def isNum(s):
     """判断是否是数字"""
@@ -100,6 +107,7 @@ def isNum(s):
         return True
     else:
         return False
+
 
 def isLetter(s):
     """判断是否是字母"""
@@ -109,14 +117,16 @@ def isLetter(s):
     else:
         return False
 
+
 def isKeyWord(s):
     """判断是否是关键字，如果是就返回种别码"""
-    key =["begin","if","then","while","do","end"]
-    keyNum=[1,2,3,4,5,6]
+    key = ["begin", "if", "then", "while", "do", "end"]
+    keyNum = [1, 2, 3, 4, 5, 6]
     if s in key:
-        return key.index(s)+1
+        return key.index(s) + 1
     else:
         return 0
+
 
 def identifyChar(c):
     """对单个字符进行识别"""
@@ -124,11 +134,13 @@ def identifyChar(c):
         return 1
     if c in '0123456789':
         return 2
-    if c in ["+","-","*","/",":",":=","<",">","<>","<=",">",">=","=",";","(",")","#"]:
+    if c in ["+", "-", "*", "/", ":", ":=", "<", ">", "<>", "<=", ">", ">=", "=", ";", "(", ")", "#"]:
         return 3
 
+
 def printf(s, num):
-    print("(" + s + ' , ' + str(num)+')')
+    print("(" + s + ' , ' + str(num) + ')')
+
 
 if __name__ == '__main__':
     # path = input("请输入文件的绝对路径:")
