@@ -1,5 +1,6 @@
 # _*_coding:utf-8_*_
 # file: LexAnalysis_f.py
+# Author: Yan_Daojiang
 def getSourceCode(path):
     """按行从文件中读取代码（忽略每行末尾的换行符）,返回源代码串"""
     line = ''
@@ -139,7 +140,7 @@ def identifyChar(c):
 
 
 def printf(s, num):
-    print("(" + s + ' , ' + str(num) + ')')
+    print("(" + str(num) + ' , ' + s + ')')
 
 
 if __name__ == '__main__':
