@@ -97,14 +97,41 @@ def subSet(f, E, K_0):
 
 
 def convert(K, E, f, S, Z):
-    """转换函数"""
-    subsets, relations = subSet(f, E, S)  # 调用子集合构造函数，获取子集合和转换关系
+    """转换函数，实现构造DFA M=(S,E,D,S0, St)"""
+    subsets, D = subSet(f, E, S)  # 调用子集合构造函数，获取子集合和转换关系
     # 对状态子集合的返回进行解析，根据转换关系构造DFA M
-    print(subsets)
-    print(relations)
+    dfa = {}
+    # 重命名的状态
+    print("转换得到DFA M=(S,E,D,S0, St)")
+    print("有穷集S:")
+    dfa["S"] = list(subsets.keys())
+    print(dfa["S"])
+    # 字母表没有变化
+    print("有穷字母表E:")
+    dfa["E"] = E
+    print(dfa["E"])
+    # 转换规则
+    print("转换规则D:")
+    dfa["D"] = D
+    print(dfa["D"])
+    # 初始状态
+    for s in list(subsets.keys()):
+        if subsets[s] == epsilon_closure(f,S):
+            dfa["S0"] = "{}".format(s)
+    print("唯一初始状态S0:")
+    print(dfa["S0"])
+    # 终态
+    print("终态集St:")
+    dfa["St"]=set()
+    for i in list(subsets.keys()):
+        if  (Z&subsets[i]) != set():
+                dfa["St"].add(i)
+    print(dfa["St"])
 
+    return dfa
 
 if __name__ == '__main__':
     nfa = 'nfa.json'
     K, E, f, S, Z = readNfa(nfa)  # NFA M = (K, E, f, S, Z),f['i']['arc']表示状态i经过arc弧到达的状态
-    convert(K, E, f, S, Z)
+    dfa = convert(K, E, f, S, Z)
+
