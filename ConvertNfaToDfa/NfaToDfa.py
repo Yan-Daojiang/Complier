@@ -16,7 +16,7 @@ def readNfa(inputFile):
 
 
 def epsilon_closure(f, I):
-    """求状态集合I:ε-clouure(I)"""
+    """求状态集合I:ε-closure(I)"""
     I = set(I)
     # 设置每个状态的标志
     closure_flag = dict()
@@ -52,50 +52,53 @@ def move(f, I, arc):
 
 def subSet(f, E, K_0):
     """子集构造算法,传入参数为NFA状态装换规则，字母表和NFA初始状态"""
-    subsets = {}  # 保存构造出的所有子集
+    T = {}  # 保存构造出的所有子集,键为子集的下标，值为对应的状态集合
     flags = {}  # 每个子集设置一个标志，表明是否被标记
     relations = {}  # 子集间的转换关系
     index = 0
-    # 开始，令ε-closure(K_0)为C中的唯一成员，并且将其设置为未标记状态
-    subsets[index] = epsilon_closure(f, K_0)
+
+    # 开始，令ε-closure(K_0)，并且将其设置为未标记状态
+    # 即求T_0并标记
+    T[index] = epsilon_closure(f, K_0)
     flags[index] = False
 
     while True:
-        C = list(subsets.keys())
-        subsets_num_before_move = len(C)
-        # 如果还存在没用move函数转换的子集
+        # 将子集合状态族C初始化，其中T_0为子集状态族唯一成员，之后循环更新
+        # C=（T_1,T_2,...）这里用列表存储下标，下标作为字典的键可进行定位
+        C = list(T.keys())
+        beforeSize = len(C)  # 通过子集状态族前后变化设置循环退出条件
         for i in C:
             if flags[i] == False:
-                # 把选中用来move的状态集标志位置为True
-                flags[i] = True
+                flags[i] = True  # 标记T
                 # 构造两个状态之间的转换关系
                 relations[i] = {}
-                for ch in E:
-                    U = epsilon_closure(f, move(f, subsets[i], ch))
+                for arc in E:
+                    U = epsilon_closure(f, move(f, T[i], arc))
 
-                    # 如果转换后的新状态集已经在subsets里面不存在,才添加,并添加转换关系
-                    if U not in subsets.values():
+                    # 产生的U不在子集状态族中
+                    if U not in T.values():
                         index += 1
-                        subsets[index] = U
+                        T[index] = U
                         # 并将新状态的标记为设置为False
                         flags[index] = False
-                        relations[i][ch] = index
-                    # 如果转换后的状态集已经在subsets中存在，不添加集合,但添加转换关系
+                        relations[i][arc] = index
+                    # 已经存在就添加转换关系
                     else:
                         # 字典中根据value获得key （因为是一一对应的关系）
-                        relations[i][ch] = list(subsets.keys())[list(subsets.values()).index(U)]
-
-        # 把C更新（因为添加了新的子集）
-        C = list(subsets.keys())
-        subsets_num_after_move = len(C)
-        if subsets_num_before_move == subsets_num_after_move:
+                        relations[i][arc] = list(T.keys())[list(T.values()).index(U)]
+        # 添加新的子集并更新C
+        C = list(T.keys())
+        afterSize = len(C)
+        # 判断子集合构造是否结束
+        if beforeSize == afterSize:  # 已经没有新的状态需要加入
             break
-    return subsets, relations
+
+    return T, relations
 
 
 def convert(K, E, f, S, Z):
     """转换函数"""
-    subsets, relations = subSet(f, E, S)    # 调用子集合构造函数，获取子集合和转换关系
+    subsets, relations = subSet(f, E, S)  # 调用子集合构造函数，获取子集合和转换关系
     # 对状态子集合的返回进行解析，根据转换关系构造DFA M
     print(subsets)
     print(relations)
