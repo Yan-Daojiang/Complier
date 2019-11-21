@@ -74,3 +74,11 @@ sum为整形常数。
 《编译原理》王生原，第三版，清华大学出版社
 
 P50 图3.6 NFA N的状态图
+
+* 转换前的NFA N如下图所示：
+
+![](D:\2019\Complier\Images\NFA.JPG)
+
+* 转换后的DFA M如下图所示
+
+![](D:\2019\Complier\Images\DFA.JPG)
