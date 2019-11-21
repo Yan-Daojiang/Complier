@@ -5,8 +5,9 @@ import json
 
 
 def readNfa(inputFile):
-    """从json文件中读取又穷自动机M, M表示为一个五元组M=(K, E, f, S, Z)"""
+    """从json文件中读取自动机M, M表示为一个五元组M=(K, E, f, S, Z)"""
     M = json.load(open(inputFile, 'r'))
+    # print(M)
     K = set(M["K"])
     E = M["E"]
     f = M["f"]  # 转换规则f的外层是一个字典，字典的键是状态，值又是一个字典，值字典的键是边
@@ -116,22 +117,38 @@ def convert(K, E, f, S, Z):
     print(dfa["D"])
     # 初始状态
     for s in list(subsets.keys()):
-        if subsets[s] == epsilon_closure(f,S):
+        if subsets[s] == epsilon_closure(f, S):
             dfa["S0"] = "{}".format(s)
     print("唯一初始状态S0:")
     print(dfa["S0"])
     # 终态
     print("终态集St:")
-    dfa["St"]=set()
+    dfa["St"] = set()
     for i in list(subsets.keys()):
-        if  (Z&subsets[i]) != set():
-                dfa["St"].add(i)
+        if (Z & subsets[i]) != set():
+            dfa["St"].add(i)
     print(dfa["St"])
 
     return dfa
+
+
+def outputToJsonFile(dfa, f):
+    """将dfa输出到json文件"""
+    # 在进行文件写入的时候出现了问题，提示：Object of type set is not JSON serializable
+    # 可能是字典中的某些键后者值不符合json文件的格式
+    # 考虑到后面的操作是将DFA最小化还是用json文件读入比较方便
+    # 按照它的提示是集合出现的问题，因此将集合类型变为list类型
+    dfa["St"] = list(dfa["St"])
+    # 写入json文件
+    f = open(f, "w")
+    dfa_json = json.dumps(dfa, indent=4, sort_keys=False, ensure_ascii=False)
+    f.write(dfa_json)
+    f.close()
+
 
 if __name__ == '__main__':
     nfa = 'nfa.json'
     K, E, f, S, Z = readNfa(nfa)  # NFA M = (K, E, f, S, Z),f['i']['arc']表示状态i经过arc弧到达的状态
     dfa = convert(K, E, f, S, Z)
-
+    output = "dfa.json"
+    outputToJsonFile(dfa, output)
