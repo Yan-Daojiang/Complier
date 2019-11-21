@@ -77,8 +77,8 @@ P50 图3.6 NFA N的状态图
 
 * 转换前的NFA N如下图所示：
 
-![](D:\2019\Complier\Images\NFA.JPG)
+![](Images\NFA.JPG)
 
 * 转换后的DFA M如下图所示
 
-![](D:\2019\Complier\Images\DFA.JPG)
+![](Images\DFA.JPG)
