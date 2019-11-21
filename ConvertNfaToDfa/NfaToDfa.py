@@ -28,7 +28,7 @@ def epsilon_closure(f, I):
 
 
 def opt_closure(f, closure_flag):
-    """被ε-closure(I)函数进行调用，进行递归求解，知道集合不再增大就返回调用函数"""
+    """被ε-closure(I)函数进行调用，进行递归求解，直到集合不再增大就返回调用函数"""
     for i in list(closure_flag.keys()):
         if "#" in f[i].keys() and closure_flag[i] == False:
             for new_state in f[i]["#"]:

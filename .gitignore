@@ -216,8 +216,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-*.jpg
-*.png
+
 *.tif
 .ipynb_checkpoints/
 *.mov
