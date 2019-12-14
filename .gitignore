@@ -221,4 +221,6 @@ $RECYCLE.BIN/
 .ipynb_checkpoints/
 *.mov
 *.fits
+*.doc
+*docx
 
