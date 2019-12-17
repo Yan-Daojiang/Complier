@@ -65,8 +65,7 @@ def symbolStr(sourceCode, s, num):
     """符号处理"""
     if num == len(sourceCode) - 1:
         return s, num + 1
-    if num == len(sourceCode) - 1:
-        return s, num
+
     curNum = num + 1
     str = sourceCode[curNum]
     if str in [">", "<", "=", ":"]:
