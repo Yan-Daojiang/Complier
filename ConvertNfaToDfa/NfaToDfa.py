@@ -101,11 +101,13 @@ def convert(K, E, f, S, Z):
     """转换函数，实现构造DFA M=(S,E,D,S0, St)"""
     subsets, D = subSet(f, E, S)  # 调用子集合构造函数，获取子集合和转换关系
     # 对状态子集合的返回进行解析，根据转换关系构造DFA M
+    # print(subsets)
+    # print(D)
     dfa = {}
     # 重命名的状态
     print("转换得到DFA M=(S,E,D,S0, St)")
     print("有穷集S:")
-    dfa["S"] = list(subsets.keys())
+    dfa["S"] = list(subsets.keys())   # 返回状态集合的排序作为新的命名
     print(dfa["S"])
     # 字母表没有变化
     print("有穷字母表E:")
@@ -115,13 +117,15 @@ def convert(K, E, f, S, Z):
     print("转换规则D:")
     dfa["D"] = D
     print(dfa["D"])
-    # 初始状态
+
+    # 初始状态：再调用一次闭包进行求解
     for s in list(subsets.keys()):
         if subsets[s] == epsilon_closure(f, S):
             dfa["S0"] = "{}".format(s)
     print("唯一初始状态S0:")
     print(dfa["S0"])
-    # 终态
+
+    # 终态   对应课本算法的第五步
     print("终态集St:")
     dfa["St"] = set()
     for i in list(subsets.keys()):
